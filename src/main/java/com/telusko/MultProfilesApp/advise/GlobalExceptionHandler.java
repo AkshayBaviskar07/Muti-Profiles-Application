@@ -1,5 +1,7 @@
 package com.telusko.MultProfilesApp.advise;
 
+import com.telusko.MultProfilesApp.exceptions.category.CategoryExists;
+import com.telusko.MultProfilesApp.exceptions.category.CategoryNotFound;
 import com.telusko.MultProfilesApp.exceptions.company.CompanyExists;
 import com.telusko.MultProfilesApp.exceptions.company.CompanyNotFound;
 import com.telusko.MultProfilesApp.model.ErrorDetails;
@@ -64,6 +66,24 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now()
         );
         // Return ResponseEntity with ErrorDetails and INTERNAL_SERVER_ERROR status
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CategoryNotFound.class)
+    private ResponseEntity<ErrorDetails> categoryNotFound(CategoryNotFound categoryNotFound) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                categoryNotFound.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CategoryExists.class)
+    private ResponseEntity<ErrorDetails> categoryExists(CategoryExists categoryExists) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                categoryExists.getMessage(),
+                LocalDateTime.now()
+        );
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
