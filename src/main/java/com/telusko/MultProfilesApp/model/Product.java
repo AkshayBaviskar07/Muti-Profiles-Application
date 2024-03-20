@@ -1,5 +1,6 @@
 package com.telusko.MultProfilesApp.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+
 
 @Entity
 @Table(name = "PRODUCTS")
@@ -29,17 +31,20 @@ public class Product {
     private Double price;
 
     @Column(name = "MFG_DATE", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date mfgDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy=MM-dd")
+    @Temporal(value = TemporalType.DATE)
+    private String mfgDate;
 
-    @Column(name = "EXPIRY_DATE", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date expiryDate;
+
+    @Column(name = "EXPIRY_DATE", nullable = false, columnDefinition = "Date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy=MM-dd")
+    @Temporal(value = TemporalType.DATE)
+    private String expiryDate;
 
     @ManyToOne
     private Category category;
 
-    public Product(String name, Double price,  Date mfgDate, Date expiryDate, Category category ) {
+    public Product(String name, Double price, String mfgDate, String expiryDate, Category category) {
         this.name = name;
         this.price = price;
         this.mfgDate = mfgDate;
