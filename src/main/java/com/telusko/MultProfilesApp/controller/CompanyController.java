@@ -17,8 +17,7 @@ public class CompanyController {
     private CompanyServiceImpl companyService;
 
     /**
-    * Endpoint to retrieve all companies
-     *
+     * Endpoint to retrieve all companies
      * @return   ResponseEntity with a list of companies objects if found with StatusCode(OK -> 200) or (NOT_FOUND -> 400)
     */
     @GetMapping
@@ -33,7 +32,6 @@ public class CompanyController {
 
     /**
      * Endpoint to Save Company record
-     *
      * @param company the Company object to add
      * @return ResponseEntity with success message and StatusCode(CREATED -> 201) if the company added
      *          or StatusCode(INTERNAL_SERVER_ERROR -> 500 ) if there was problem in saving data
@@ -50,7 +48,6 @@ public class CompanyController {
 
     /**
      * Endpoint to Get Company object by id
-     *
      * @param id to fetch the record of particular id
      * @return ResponseEntity with Company object and Http Status (OK->200)
      *      or (NOT_FOUND->400)
@@ -67,8 +64,7 @@ public class CompanyController {
     }
 
     /**
-     * Endpoint to Update company details by ID.
-     *
+     * Endpoint to Update company details by ID
      * @param updatedCompany The updated company details
      * @param id The ID of the company to be updated
      * @return ResponseEntity with a success message and StatusCode(200) if the update was successful,
@@ -102,6 +98,46 @@ public class CompanyController {
             return new ResponseEntity<>("Record deleted!", HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     *  Endpoint to add a category in existing company
+     * @param companyId The Id of existing company to add in
+     * @param catId The Id of category to add in company
+     * @return ResponseEntity which return successful message if category add
+     *          or BAD_REQUEST if not added
+     */
+    @PutMapping("/{companyId}/category/{catId}")
+    private ResponseEntity<String> addCategoryInCompany(@PathVariable Long companyId,
+                                                        @PathVariable Long catId) {
+
+        boolean isCategoryAdded = companyService
+                .addCategoryInCompany(companyId, catId);
+
+        if(isCategoryAdded)
+            return new ResponseEntity<>("Category added successfully", HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Remove a category from a company.
+     * @param companyId the ID of the company
+     * @param catId the ID of the category to be removed
+     * @return a ResponseEntity with a success message if the category was removed successfully,
+     *         otherwise return a ResponseEntity with a BAD_REQUEST status
+     */
+    @DeleteMapping("/{companyId}/category/{catId}")
+    private ResponseEntity<String> removeCategoryFromCompany(@PathVariable Long companyId,
+                                                             @PathVariable Long catId) {
+
+        boolean isCategoryRemoved = companyService.removeCategoryFromCompany(companyId, catId);
+
+        if (isCategoryRemoved) {
+            return new ResponseEntity<>("Category removed successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
