@@ -4,6 +4,7 @@ import com.telusko.MultProfilesApp.dao.CategoryRepo;
 import com.telusko.MultProfilesApp.exceptions.category.CategoryExists;
 import com.telusko.MultProfilesApp.exceptions.category.CategoryNotFound;
 import com.telusko.MultProfilesApp.model.Category;
+import com.telusko.MultProfilesApp.model.Product;
 import com.telusko.MultProfilesApp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepo categoryRepo;
+    @Autowired
+    private ProductServiceImpl productService;
 
     /**
      * Retrieves all categories from the database.
@@ -117,6 +120,61 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             // If the category with the given ID does not exist.
             throw new CategoryNotFound("Category not found.");
+        }
+    }
+
+    /**
+     * Adds the products into specific category
+     * @param catId The category ID used to fetch category
+     * @param prodId The product ID used to fetch product
+     * @return true if product successfully add into category otherwise false
+     */
+    @Override
+    public boolean addProductInCategory(Long catId, Long prodId) {
+        // Get the product by ID
+        Product product = productService.getProductById(prodId);
+        // Get the category by ID
+        Category category = getCategoryById(catId);
+        // Check if category is present or not
+        if(category != null) {
+            category.getProducts().add(product);    // add the product into category
+            product.setCategory(category);      // add the category into product
+            // Update the changes
+            categoryRepo.save(category);
+            productService.updateProductById(product, prodId);
+
+            // Return true if product successfully added into category
+            return true;
+        } else {
+            // Return false if product not added
+            return false;
+        }
+    }
+
+    /**
+     * Removes the products from specific category
+     * @param catId The category ID used to fetch category
+     * @param prodId The product ID used to fetch product
+     * @return true if product successfully removed from category otherwise false
+     */
+    @Override
+    public boolean removeProductFromCategory(Long prodId, Long catId) {
+        // Get the product by ID
+        Product product = productService.getProductById(prodId);
+        // Get the category by ID
+        Category category = getCategoryById(catId);
+        // Check if category is present or not
+        if(category != null) {
+            category.getProducts().remove(product); // Remove product from category
+            categoryRepo.save(category);       // Update the category
+            product.setCategory(null);         // Remove category from product
+            productService.updateProductById(product,prodId);   // Update the product
+
+            // Return true if product removed successfully
+            return true;
+        } else {
+            // Return true if product not removed
+            return false;
         }
     }
 

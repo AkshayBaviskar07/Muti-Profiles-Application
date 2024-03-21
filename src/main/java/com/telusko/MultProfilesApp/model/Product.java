@@ -41,7 +41,7 @@ public class Product {
     @Temporal(value = TemporalType.DATE)
     private String expiryDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
 
     public Product(String name, Double price, String mfgDate, String expiryDate, Category category) {

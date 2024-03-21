@@ -99,4 +99,28 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{catId}/product/{prodId}")
+    private ResponseEntity<String> addProductInCategory(@PathVariable Long catId,
+                                                        @PathVariable Long prodId) {
+
+        boolean isProductAdded = categoryService.addProductInCategory(catId, prodId);
+        if(isProductAdded) {
+            return new ResponseEntity<>("Product added successfully!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{catId}/product/{prodId}")
+    private ResponseEntity<String> removeProductFromCategory(@PathVariable Long prodId,
+                                                             @PathVariable Long catId) {
+
+        boolean isProductRemoved = categoryService.removeProductFromCategory(prodId, catId);
+        if (isProductRemoved) {
+            return new ResponseEntity<>("Product removed successfully!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -11,4 +11,8 @@ public interface CategoryService {
     Category getCategoryById(Long id);
     boolean updateCategory(Category updatedCategory, Long id);
     boolean deleteCategoryById(Long id);
+
+    boolean addProductInCategory(Long catId, Long prodId);
+
+    boolean removeProductFromCategory(Long prodId, Long catId);
 }
