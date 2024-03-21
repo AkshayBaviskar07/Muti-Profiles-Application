@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/company/{companyId}/category/{catId}/product")
 public class ProductController {
     @Autowired
     private ProductServiceImpl productService;
@@ -91,4 +91,5 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 }
