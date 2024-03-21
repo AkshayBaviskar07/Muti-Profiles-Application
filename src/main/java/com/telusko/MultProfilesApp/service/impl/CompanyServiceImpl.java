@@ -18,8 +18,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private CompanyRepo companyRepo;
-    @Autowired
-    private CategoryServiceImpl categoryService;
 
     /**
      * Retrieves all companies from the database.
@@ -128,60 +126,6 @@ public class CompanyServiceImpl implements CompanyService {
         } else {
             // Return false if company not found.
             throw new CompanyNotFound("Company not found");
-        }
-    }
-
-    /** Adds the specified category to the company.
-     * @param companyId the ID of the company
-     * @param catId the ID of the category to be added
-     * @return true if the category was added successfully, false otherwise
-     */
-    @Override
-    public boolean addCategoryInCompany(Long companyId, Long catId) {
-        // Fetch category by id
-        Category category = categoryService.getCategoryById(catId);
-        // Fetch company by id
-        Company existingCompany = getCompanyById(companyId);
-
-        // Check is company found or not
-        if (existingCompany != null) {
-            // Add category in company
-            existingCompany.getCategories().add(category);
-            category.getCompanies().add(existingCompany);
-            // Save company and return true
-            companyRepo.save(existingCompany);
-            categoryService.updateCategory(category, catId);
-            return true;
-        } else {
-            // Return false if category not added
-            return false;
-        }
-    }
-
-    /**
-     * Removes a category from a company by updating the company's category list and the category's company list.
-     * @param companyId The ID of the company
-     * @param catId The ID of the category
-     * @return true if the category is successfully removed from the company, false otherwise
-     */
-    @Override
-    public boolean removeCategoryFromCompany(Long companyId, Long catId) {
-
-        // Get company by its ID
-        Company existingCompany = getCompanyById(companyId);
-        // Get category by its ID
-        Category category = categoryService.getCategoryById(catId);
-
-        // Check if company exits or not
-        if (existingCompany != null) {
-            existingCompany.getCategories().remove(category);   // Remove category from company
-            category.getCompanies().remove(existingCompany);    // Remove company from category
-            companyRepo.save(existingCompany);      // Update company details
-            categoryService.updateCategory(category, catId);    // Update category details
-            return true;    // Return true if category successfully removed
-        } else {
-            // Return false if category not removed
-            return false;
         }
     }
 }

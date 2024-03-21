@@ -36,4 +36,5 @@ public class Company {
                 @JoinColumn(name = "category_id", referencedColumnName = "id")
         })
     private List<Category> categories;
+
 }

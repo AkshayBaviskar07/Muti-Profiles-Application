@@ -101,43 +101,4 @@ public class CompanyController {
         }
     }
 
-    /**
-     *  Endpoint to add a category in existing company
-     * @param companyId The Id of existing company to add in
-     * @param catId The Id of category to add in company
-     * @return ResponseEntity which return successful message if category add
-     *          or BAD_REQUEST if not added
-     */
-    @PutMapping("/{companyId}/category/{catId}")
-    private ResponseEntity<String> addCategoryInCompany(@PathVariable Long companyId,
-                                                        @PathVariable Long catId) {
-
-        boolean isCategoryAdded = companyService
-                .addCategoryInCompany(companyId, catId);
-
-        if(isCategoryAdded)
-            return new ResponseEntity<>("Category added successfully", HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    /**
-     * Remove a category from a company.
-     * @param companyId the ID of the company
-     * @param catId the ID of the category to be removed
-     * @return a ResponseEntity with a success message if the category was removed successfully,
-     *         otherwise return a ResponseEntity with a BAD_REQUEST status
-     */
-    @DeleteMapping("/{companyId}/category/{catId}")
-    private ResponseEntity<String> removeCategoryFromCompany(@PathVariable Long companyId,
-                                                             @PathVariable Long catId) {
-
-        boolean isCategoryRemoved = companyService.removeCategoryFromCompany(companyId, catId);
-
-        if (isCategoryRemoved) {
-            return new ResponseEntity<>("Category removed successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
 }

@@ -41,14 +41,5 @@ public interface CompanyService {
      */
     boolean deleteCompanyById(Long id);
 
-    /**
-     * Adds a category to a company.
-     * @param companyId The ID of the company.
-     * @param catId The ID of the category to add.
-     * @return true if the category was successfully added, false otherwise.
-     */
-    boolean addCategoryInCompany(Long companyId, Long catId);
-
-    boolean removeCategoryFromCompany(Long companyId, Long catId);
 
 }
