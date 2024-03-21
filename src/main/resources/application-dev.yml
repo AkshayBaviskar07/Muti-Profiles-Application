@@ -1,5 +1,10 @@
-spring.datasource.url = jdbc:mysql://localhost:3306/company_details
-spring.datasource.username = root
-spring.datasource.password = akshay
-spring.jpa.show-sql = true
-spring.jpa.hibernate.ddl-auto = update
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/company_details
+    username: root
+    password: akshay
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+

@@ -1,3 +1,5 @@
-spring.application.name = "Muliti-Profile Application"
-
-spring.profiles.active = test
+spring:
+  application:
+    name: Multi-Profile Application
+  profiles:
+    active: test, prod
