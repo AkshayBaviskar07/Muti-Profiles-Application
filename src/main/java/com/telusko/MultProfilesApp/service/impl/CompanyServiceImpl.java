@@ -3,7 +3,6 @@ package com.telusko.MultProfilesApp.service.impl;
 import com.telusko.MultProfilesApp.dao.CompanyRepo;
 import com.telusko.MultProfilesApp.exceptions.company.CompanyExists;
 import com.telusko.MultProfilesApp.exceptions.company.CompanyNotFound;
-import com.telusko.MultProfilesApp.model.Category;
 import com.telusko.MultProfilesApp.model.Company;
 import com.telusko.MultProfilesApp.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
