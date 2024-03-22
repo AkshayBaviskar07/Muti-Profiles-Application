@@ -4,6 +4,7 @@ import com.telusko.MultProfilesApp.exceptions.category.CategoryExists;
 import com.telusko.MultProfilesApp.exceptions.category.CategoryNotFound;
 import com.telusko.MultProfilesApp.exceptions.company.CompanyExists;
 import com.telusko.MultProfilesApp.exceptions.company.CompanyNotFound;
+import com.telusko.MultProfilesApp.exceptions.product.ProductNotFound;
 import com.telusko.MultProfilesApp.model.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,5 +86,14 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ProductNotFound.class)
+    private ResponseEntity<ErrorDetails> productNotFound(ProductNotFound productNotFound) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                productNotFound.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 }
