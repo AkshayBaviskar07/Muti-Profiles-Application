@@ -10,34 +10,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company/{companyId}/category/{catId}/product")
+@RequestMapping("/company/{companyId}/category/{categoryId}/product")
 public class ProductController {
     @Autowired
     private ProductServiceImpl productService;
 
     /**
-     * Get all products
-     *
-     * @return ResponseEntity with a list of products or NOT_FOUND if the list is empty
+     * Retrieves all products for a given company and category.
+     * @param companyId the ID of the company
+     * @param categoryId the ID of the category
+     * @return ResponseEntity with a list of products if found, or NOT_FOUND if the list is empty
      */
     @GetMapping
-    private ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    private ResponseEntity<List<Product>> getAllProducts(@PathVariable Long companyId,
+                                                         @PathVariable Long categoryId) {
+        // Retrieve all products for the given company and category
+        List<Product> products = productService.getAllProducts(companyId, categoryId);
+
+        // Check if the list of products is empty
         if (products.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        // Return the list of products with OK status
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     /**
-     * Adds a new product to the system.
+     * A description of the entire Java function.
      *
-     * @param product The product to be added.
-     * @return A ResponseEntity containing the result of the operation.
+     * @param companyId description of parameter
+     * @param categoryId description of parameter
+     * @param product description of parameter
+     * @return description of return value
      */
     @PostMapping
-    private ResponseEntity<String> addProduct (@RequestBody Product product) {
-        boolean isAdded = productService.addProduct(product);
+    private ResponseEntity<String> addProduct (@PathVariable Long companyId,
+                                               @PathVariable Long categoryId,
+                                               @RequestBody Product product) {
+        boolean isAdded = productService.addProduct(companyId, categoryId ,product);
         if (isAdded) {
             return new ResponseEntity<>("Product successfully added", HttpStatus.OK);
         }
@@ -45,14 +56,19 @@ public class ProductController {
     }
 
     /**
-     * Get a product by its ID.
+     * A description of the entire Java function.
      *
-     * @param id The ID of the product to retrieve.
-     * @return ResponseEntity containing the product if found, otherwise return NOT FOUND status.
+     * @param companyId description of parameter
+     * @param categoryId description of parameter
+     * @param productId	description of parameter
+     * @return description of return value
      */
-    @GetMapping("/{id}")
-    private ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
+    @GetMapping("/{productId}")
+    private ResponseEntity<Product> getProductById(@PathVariable Long companyId,
+                                                   @PathVariable Long categoryId,
+                                                   @PathVariable Long productId) {
+
+        Product product = productService.getProductById(companyId, categoryId, productId);
         if(product != null) {
             return new ResponseEntity<>(product, HttpStatus.OK);
         }
@@ -62,15 +78,18 @@ public class ProductController {
     /**
      * Update a product by its ID.
      *
-     * @param product The updated product information.
-     * @param id The ID of the product to update.
-     * @return ResponseEntity with a success message if the product was updated successfully,
-     *         or a NOT_FOUND status if the product was not found.
+     * @param companyId the company ID
+     * @param categoryId the category ID
+     * @param updatedProduct the updated product
+     * @param productId the product ID
+     * @return a ResponseEntity with a success message if the product was updated, otherwise NOT_FOUND
      */
-    @PutMapping("/{id}")
-    private ResponseEntity<String> updateProductById(@RequestBody Product product,
-                                                     @PathVariable Long id) {
-        boolean isUpdated = productService.updateProductById(product, id);
+    @PutMapping("/{productId}")
+    private ResponseEntity<String> updateProductById(@PathVariable Long companyId,
+                                                     @PathVariable Long categoryId,
+                                                     @RequestBody Product updatedProduct,
+                                                     @PathVariable Long productId) {
+        boolean isUpdated = productService.updateProductById(companyId, categoryId, updatedProduct, productId);
         if (isUpdated) {
             return new ResponseEntity<>("Product updated successfully!", HttpStatus.OK);
         }
@@ -78,14 +97,18 @@ public class ProductController {
     }
 
     /**
-     * Delete a product by its ID
+     * Delete a product by its ID.
      *
-     * @param id the ID of the product to delete
-     * @return a ResponseEntity with a message indicating success or failure
+     * @param companyId the ID of the company
+     * @param categoryId the ID of the category
+     * @param productId the ID of the product
+     * @return a ResponseEntity with a success or not found message
      */
-    @DeleteMapping("/{id}")
-    private ResponseEntity<String> deleteProductById(@PathVariable Long id) {
-        boolean isDeleted = productService.deleteProductById(id);
+    @DeleteMapping("/{productId}")
+    private ResponseEntity<String> deleteProductById(@PathVariable Long companyId,
+                                                     @PathVariable Long categoryId,
+                                                     @PathVariable Long productId) {
+        boolean isDeleted = productService.deleteProductById(companyId, categoryId, productId);
         if (isDeleted) {
             return new ResponseEntity<>("Product deleted successfully!", HttpStatus.OK);
         }
