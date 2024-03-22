@@ -2,4 +2,4 @@ spring:
   application:
     name: Multi-Profile Application
   profiles:
-    active: test, prod
+    active: test
